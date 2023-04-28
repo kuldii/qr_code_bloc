@@ -1,10 +1,12 @@
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../pages/home.dart';
 import '../pages/settings.dart';
 import '../pages/products.dart';
 import '../pages/detail_product.dart';
 import '../pages/error.dart';
+import '../pages/login.dart';
 
 export 'package:go_router/go_router.dart';
 
@@ -12,6 +14,17 @@ part 'route_name.dart';
 
 // GoRouter configuration
 final router = GoRouter(
+  redirect: (context, state) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    print(auth.currentUser);
+    // cek kondisi saat ini -> sedang terautentikasi
+    if (auth.currentUser == null) {
+      // tidak sedang login / tidak ada user yg aktif saat ini
+      return "/login";
+    } else {
+      return null;
+    }
+  },
   errorBuilder: (context, state) => const ErrorPage(),
   routes: [
     // KALAU 1 LEVEL -> Push Replacement
@@ -43,6 +56,11 @@ final router = GoRouter(
       path: '/settings',
       name: Routes.settings,
       builder: (context, state) => const SettingsPage(),
+    ),
+    GoRoute(
+      path: '/login',
+      name: Routes.login,
+      builder: (context, state) => LoginPage(),
     ),
   ],
 );
