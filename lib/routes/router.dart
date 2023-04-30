@@ -2,9 +2,9 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../pages/home.dart';
-import '../pages/settings.dart';
 import '../pages/products.dart';
 import '../pages/detail_product.dart';
+import '../pages/add_product.dart';
 import '../pages/error.dart';
 import '../pages/login.dart';
 
@@ -16,7 +16,6 @@ part 'route_name.dart';
 final router = GoRouter(
   redirect: (context, state) {
     FirebaseAuth auth = FirebaseAuth.instance;
-    print(auth.currentUser);
     // cek kondisi saat ini -> sedang terautentikasi
     if (auth.currentUser == null) {
       // tidak sedang login / tidak ada user yg aktif saat ini
@@ -50,12 +49,12 @@ final router = GoRouter(
             ),
           ],
         ),
+        GoRoute(
+          path: 'add-product',
+          name: Routes.addProduct,
+          builder: (context, state) => AddProductPage(),
+        ),
       ],
-    ),
-    GoRoute(
-      path: '/settings',
-      name: Routes.settings,
-      builder: (context, state) => const SettingsPage(),
     ),
     GoRoute(
       path: '/login',

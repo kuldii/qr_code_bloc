@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qrcode/bloc/auth/auth_bloc.dart';
+import 'package:qrcode/bloc/bloc.dart';
 import 'package:qrcode/routes/router.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,43 +9,69 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("HOME PAGE"),
+        title: const Text("HOME"),
+        centerTitle: true,
       ),
-      body: Center(
-        child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthStateLogout) {
-              context.goNamed(Routes.login);
-            }
-          },
-          builder: (context, state) {
-            if (state is AuthStateLoading) {
-              return const CircularProgressIndicator();
-            }
-            if (state is AuthStateError) {
-              return Text(state.message);
-            }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // GoRouter.of(context).go('/settings');
-                    context.goNamed(Routes.settings);
-                  },
-                  child: const Text("SETTINGS"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // GoRouter.of(context).go('/products');
-                    context.goNamed(Routes.products);
-                  },
-                  child: const Text("ALL PRODUCTS"),
-                ),
-              ],
-            );
-          },
+      body: GridView.builder(
+        padding: const EdgeInsets.all(20),
+        itemCount: 4,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
         ),
+        itemBuilder: (context, index) {
+          late String title;
+          late IconData icon;
+          late VoidCallback onTap;
+
+          switch (index) {
+            case 0:
+              title = "Add Product";
+              icon = Icons.post_add_rounded;
+              onTap = () => context.goNamed(Routes.addProduct);
+              break;
+            case 1:
+              title = "Products";
+              icon = Icons.list_alt_outlined;
+              onTap = () {};
+              break;
+            case 2:
+              title = "QR Code";
+              icon = Icons.qr_code;
+              onTap = () {};
+              break;
+            case 3:
+              title = "Catalog";
+              icon = Icons.document_scanner_outlined;
+              onTap = () {};
+              break;
+          }
+
+          return Material(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(9),
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(9),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Icon(
+                      icon,
+                      size: 50,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(title),
+                ],
+              ),
+            ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

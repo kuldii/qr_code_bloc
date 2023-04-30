@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-export 'package:flutter_bloc/flutter_bloc.dart';
-
 part 'auth_event.dart';
 part 'auth_state.dart';
 

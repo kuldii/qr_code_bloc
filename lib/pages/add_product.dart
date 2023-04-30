@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:qrcode/bloc/bloc.dart';
 import 'package:qrcode/routes/router.dart';
 
-import '../bloc/bloc.dart';
+class AddProductPage extends StatelessWidget {
+  AddProductPage({super.key});
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
-
-  final TextEditingController emailC = TextEditingController(text: "admin@gmail.com");
-  final TextEditingController passC = TextEditingController(text: "admin123");
+  final TextEditingController codeC = TextEditingController();
+  final TextEditingController nameC = TextEditingController();
+  final TextEditingController qtyC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("LOGIN PAGE"),
+        title: const Text("ADD PRODUCT"),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
           TextField(
             autocorrect: false,
-            controller: emailC,
+            controller: codeC,
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
+              labelText: "Product Code",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(9),
               ),
@@ -30,9 +32,22 @@ class LoginPage extends StatelessWidget {
           const SizedBox(height: 20),
           TextField(
             autocorrect: false,
-            controller: passC,
-            obscureText: true,
+            controller: nameC,
+            keyboardType: TextInputType.text,
             decoration: InputDecoration(
+              labelText: "Product Name",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(9),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          TextField(
+            autocorrect: false,
+            controller: qtyC,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: "Quantity",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(9),
               ),
@@ -41,9 +56,12 @@ class LoginPage extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              // proses login
-              context.read<AuthBloc>().add(
-                    AuthEventLogin(emailC.text, passC.text),
+              context.read<ProductBloc>().add(
+                    ProductEventAddProduct(
+                      code: codeC.text,
+                      name: nameC.text,
+                      qty: int.tryParse(qtyC.text) ?? 0,
+                    ),
                   );
             },
             style: ElevatedButton.styleFrom(
@@ -52,25 +70,21 @@ class LoginPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(9),
               ),
             ),
-            child: BlocConsumer<AuthBloc, AuthState>(
+            child: BlocConsumer<ProductBloc, ProductState>(
               listener: (context, state) {
-                if (state is AuthStateLogin) {
-                  context.goNamed(Routes.home);
-                }
-                if (state is AuthStateError) {
+                if (state is ProductStateError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(state.message),
-                      duration: const Duration(seconds: 2),
                     ),
                   );
                 }
+                if (state is ProductStateComplete) {
+                  context.pop();
+                }
               },
               builder: (context, state) {
-                if (state is AuthStateLoading) {
-                  return const Text("LOADING...");
-                }
-                return const Text("LOGIN");
+                return Text(state is ProductStateLoading ? "LOADING..." : "ADD PRODUCT");
               },
             ),
           ),
