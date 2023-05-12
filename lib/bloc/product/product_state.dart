@@ -12,7 +12,11 @@ class ProductStateInitial extends ProductState {}
 
 class ProductStateLoading extends ProductState {}
 
-class ProductStateComplete extends ProductState {}
+class ProductStateCompleteEdit extends ProductState {}
+
+class ProductStateCompleteDelete extends ProductState {}
+
+class ProductStateCompleteAdd extends ProductState {}
 
 class ProductStateError extends ProductState {
   ProductStateError(this.message);

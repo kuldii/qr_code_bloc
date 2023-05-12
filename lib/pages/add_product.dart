@@ -88,7 +88,7 @@ class AddProductPage extends StatelessWidget {
                     ),
                   );
                 }
-                if (state is ProductStateComplete) {
+                if (state is ProductStateCompleteAdd) {
                   context.pop();
                 }
               },
