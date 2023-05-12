@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
             case 1:
               title = "Products";
               icon = Icons.list_alt_outlined;
-              onTap = () {};
+              onTap = () => context.goNamed(Routes.products);
               break;
             case 2:
               title = "QR Code";

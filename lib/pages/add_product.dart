@@ -22,6 +22,7 @@ class AddProductPage extends StatelessWidget {
             autocorrect: false,
             controller: codeC,
             keyboardType: TextInputType.number,
+            maxLength: 10,
             decoration: InputDecoration(
               labelText: "Product Code",
               border: OutlineInputBorder(
@@ -56,13 +57,21 @@ class AddProductPage extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              context.read<ProductBloc>().add(
-                    ProductEventAddProduct(
-                      code: codeC.text,
-                      name: nameC.text,
-                      qty: int.tryParse(qtyC.text) ?? 0,
-                    ),
-                  );
+              if (codeC.text.length == 10) {
+                context.read<ProductBloc>().add(
+                      ProductEventAddProduct(
+                        code: codeC.text,
+                        name: nameC.text,
+                        qty: int.tryParse(qtyC.text) ?? 0,
+                      ),
+                    );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Code product must 10 characters"),
+                  ),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 20),

@@ -1,12 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:qrcode/models/product.dart';
 
 part 'product_event.dart';
 part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Stream<QuerySnapshot<Product>> streamProducts() async* {
+    yield* firestore
+        .collection("products")
+        .withConverter<Product>(
+          fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()!),
+          toFirestore: (product, _) => product.toJson(),
+        )
+        .snapshots();
+  }
+
   ProductBloc() : super(ProductStateInitial()) {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
     on<ProductEventAddProduct>((event, emit) async {
       try {
         emit(ProductStateLoading());
