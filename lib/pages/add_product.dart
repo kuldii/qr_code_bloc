@@ -93,7 +93,7 @@ class AddProductPage extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                return Text(state is ProductStateLoading ? "LOADING..." : "ADD PRODUCT");
+                return Text(state is ProductStateLoadingAdd ? "LOADING..." : "ADD PRODUCT");
               },
             ),
           ),

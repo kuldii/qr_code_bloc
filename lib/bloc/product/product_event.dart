@@ -28,3 +28,5 @@ class ProductEventDeleteProduct extends ProductEvent {
 
   final String id;
 }
+
+class ProductEventExportToPdf extends ProductEvent {}

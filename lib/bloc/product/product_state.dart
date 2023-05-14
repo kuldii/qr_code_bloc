@@ -10,13 +10,21 @@ abstract class ProductState {}
 
 class ProductStateInitial extends ProductState {}
 
-class ProductStateLoading extends ProductState {}
+class ProductStateLoadingAdd extends ProductState {}
+
+class ProductStateLoadingExport extends ProductState {}
+
+class ProductStateLoadingEdit extends ProductState {}
+
+class ProductStateLoadingDelete extends ProductState {}
 
 class ProductStateCompleteEdit extends ProductState {}
 
 class ProductStateCompleteDelete extends ProductState {}
 
 class ProductStateCompleteAdd extends ProductState {}
+
+class ProductStateCompleteExport extends ProductState {}
 
 class ProductStateError extends ProductState {
   ProductStateError(this.message);

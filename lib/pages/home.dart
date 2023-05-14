@@ -44,7 +44,9 @@ class HomePage extends StatelessWidget {
             case 3:
               title = "Catalog";
               icon = Icons.document_scanner_outlined;
-              onTap = () {};
+              onTap = () {
+                context.read<ProductBloc>().add(ProductEventExportToPdf());
+              };
               break;
           }
 
@@ -57,14 +59,33 @@ class HomePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: Icon(
-                      icon,
-                      size: 50,
-                    ),
-                  ),
+                  (index == 3)
+                      ? BlocConsumer<ProductBloc, ProductState>(
+                          listener: (context, state) {
+                            // TODO: implement listener
+                          },
+                          builder: (context, state) {
+                            if (state is ProductStateLoadingExport) {
+                              return const CircularProgressIndicator();
+                            }
+                            return SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: Icon(
+                                icon,
+                                size: 50,
+                              ),
+                            );
+                          },
+                        )
+                      : SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Icon(
+                            icon,
+                            size: 50,
+                          ),
+                        ),
                   const SizedBox(height: 10),
                   Text(title),
                 ],

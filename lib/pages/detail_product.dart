@@ -111,7 +111,7 @@ class DetailProductPage extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                return Text(state is ProductStateLoading ? "LOADING..." : "UPDATE PRODUCT");
+                return Text(state is ProductStateLoadingEdit ? "LOADING..." : "UPDATE PRODUCT");
               },
             ),
           ),
@@ -136,7 +136,7 @@ class DetailProductPage extends StatelessWidget {
               },
               builder: (context, state) {
                 return Text(
-                  "Delete Product",
+                  state is ProductStateLoadingDelete ? "Loading..." : "Delete Product",
                   style: TextStyle(
                     color: Colors.red.shade900,
                   ),
